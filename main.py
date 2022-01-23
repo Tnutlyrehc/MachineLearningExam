@@ -7,6 +7,8 @@ from sklearn.metrics import accuracy_score
 from matplotlib import pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import keras
+from keras import utils
+
 from PIL import Image
 import glob
 import os
@@ -20,18 +22,6 @@ from keras.preprocessing import image
 
 # Assuming we're handed a CSV
 df_labels = pd.read_csv('Data\DIDA_12000_String_Digit_Labels.csv', encoding='utf-8', delimiter=(','), header = None, names=["index", "string"])
-"""
-#Getting the 0 to 9 data
-numblist = []
-path = 'Data/10000'
-
-#Getting the images in the subfolders
-for root, dirs, files in os.walk(path):
-    for file in files:
-        # append the file name to the list
-        numblist.append(os.path.join(root, file))
-print(len(numblist))
-"""
 
 df_labels['CC'] = 0
 df_labels['D'] = 0
@@ -55,19 +45,6 @@ print(df_labels)
 
 df_labels.to_csv('12k_labeled.csv', index = False, sep = ',', header = True)
 
-"""
-imgs = []
-path = "Data/DIDA_1"
-valid_images = [".jpg",".png",".jpeg"]
-for f in os.listdir(path):
-    ext = os.path.splitext(f)[1]
-    if ext.lower() not in valid_images:
-        continue
-    imgs.append(Image.open(os.path.join(path,f)))
-
-print(len(imgs))"""
-
-#dida_img = Image.OPEN('Data/DIDA_1')
 
 images = glob.glob("Data/DIDA_1/*.jpg")
 for image in images:
