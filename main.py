@@ -1,3 +1,5 @@
+import glob
+
 import numpy as np
 import pandas as pd
 import os
@@ -9,6 +11,8 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
+
+
 path = 'data'
 
 # creating the labels from CSV file
@@ -75,3 +79,10 @@ write_to_dir(X_test, 'test')
 write_to_dir(X_train, 'train')
 write_to_dir(X_val, 'validation')
 
+path = "data/test"
+files = os.listdir(path)
+
+images_test = glob.glob('*/*.jpg')
+image_strings = [str(p) for p in images_test]
+
+print(image_strings)
