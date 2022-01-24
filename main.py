@@ -1,72 +1,76 @@
-import pandas as pd
 import numpy as np
-import tensorflow as tf
-import sklearn
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from matplotlib import pyplot as plt
-from sklearn.preprocessing import StandardScaler
+import pandas as pd
+import os
+import re
+
 import keras
-from keras import utils
-
-from PIL import Image
-import glob
-import os
-import random
-import os
-import shutil
-import splitfolders
 from sklearn.model_selection import train_test_split
-from tqdm import tqdm
 from keras.preprocessing import image
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
+from tensorflow.keras import regularizers
+path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
 
-# Assuming we're handed a CSV
-df_labels = pd.read_csv('Data\DIDA_12000_String_Digit_Labels.csv', encoding='utf-8', delimiter=(','), header = None, names=["index", "string"])
+# creating the labels from CSV file
+labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
 
-df_labels['CC'] = 0
-df_labels['D'] = 0
-df_labels['Y'] = 0
-df_labels = df_labels.astype(str)
+CC = []
+D = []
+Y = []
 
-for i, row in df_labels.iterrows():
-    if len(row['string']) != 4:
-        row['CC'] = '1'
-        row['D'] = '10'
-        row['Y'] = '10'
+for i in range(0,len(labels)):
+    current_year = labels.iat[i, 1]
+    digits = [int(x) for x in str(current_year)]
+    # check for century
+    if len(digits) > 4:
+        CC.append(1)
+        D.append(10)
+        Y.append(10)
+    elif len(digits) < 4:
+        CC.append(1)
+        D.append(digits[-2])
+        Y.append(digits[-1])
     else:
-        row['D'] = row['string'][2]
-        row['Y'] = row['string'][3]
-        if row['string'][0:2] == '18':
-            row['CC']='0'
+        if digits[0] == 1 and digits[1] == 8:
+            CC.append(0)
         else:
-            row['CC']='1'
+            CC.append(1)
+        D.append(digits[-2])
+        Y.append(digits[-1])
 
-print(df_labels)
+labels['CC'] = CC
+labels['D'] = D
+labels['Y'] = Y
 
-df_labels.to_csv('12k_labeled.csv', index = False, sep = ',', header = True)
+# exploratory data analysis - summary statistics
+print('18 or not \n', labels['CC'].value_counts())
+print('Decade \n', labels['D'].value_counts())
+print('Year \n', labels['Y'].value_counts())
+
+# reading the data to a list
+raw_imgs = []
+
+for i in os.listdir(path + '/original_data'):
+    current_image = image.load_img(os.path.join(path + '/original_data', i))
+    raw_imgs.append([current_image, i])
 
 
-images = glob.glob("Data/DIDA_1/*.jpg")
-for image in images:
-    with open(image, 'rb') as file:
-        img = Image.open(file)
-        #img.show()
+# splitting the data randomly
+X_train, X_test = train_test_split(raw_imgs, random_state=42, test_size=0.2)
+X_train, X_val= train_test_split(X_train, random_state=42, test_size=0.2)
+print(len(X_train), len(X_val), len(X_test))
 
-(x_train, y_train), (x_test, y_test) = images
-print(x_train.shape, y_train.shape)
+y_index_train = [int(re.sub("[^0-9]", "",item[1])) for item in X_train]
+y_index_test = [int(re.sub("[^0-9]", "",item[1])) for item in X_test]
+y_index_val = [int(re.sub("[^0-9]", "",item[1])) for item in X_val]
+print(y_index_train)
+#y_train = labels['Index' == X_train]
+# writing it to the three directories
+def write_to_dir (data, type):
+    path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'  + '/' + type
+    for i in range(len(data)):
+        image.save_img(os.path.join(path, data[i][1]), data[i][0])
+write_to_dir(X_test, 'test')
+write_to_dir(X_train, 'train')
+write_to_dir(X_val, 'validation')
 
-x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-input_shape = (28, 28, 1)
-# convert class vectors to binary class matrices
-y_train = keras.utils.to_categorical(y_train, df_labels)
-y_test = keras.utils.to_categorical(y_test, df_labels)
-x_train = x_train.astype('float32')
-x_test = x_test.astype('float32')
-x_train /= 255
-x_test /= 255
-print('x_train shape:', x_train.shape)
-print(x_train.shape[0], 'train samples')
-print(x_test.shape[0], 'test samples')
-
-#print(len(x_train))
