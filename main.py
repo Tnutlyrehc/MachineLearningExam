@@ -11,13 +11,15 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-
+from keras.preprocessing.image import load_img
+from keras.preprocessing.image import img_to_array
+from numpy import asarray
 
 path = 'data'
 
 # creating the labels from CSV file
-labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
-
+#labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
+"""
 CC = []
 D = []
 Y = []
@@ -49,16 +51,15 @@ labels['Y'] = Y
 # exploratory data analysis - summary statistics
 print('18 or not \n', labels['CC'].value_counts())
 print('Decade \n', labels['D'].value_counts())
-print('Year \n', labels['Y'].value_counts())
+print('Year \n', labels['Y'].value_counts())"""
 
 # reading the data to a list
-raw_imgs = []
 
+raw_imgs = []
 
 for i in os.listdir(path + '/original_data'):
     current_image = image.load_img(os.path.join(path + '/original_data', i))
     raw_imgs.append([current_image, i])
-
 
 # splitting the data randomly
 X_train, X_test = train_test_split(raw_imgs, random_state=42, test_size=0.2)
