@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import os
 import re
-
+import matplotlib.pyplot as plt
 import keras
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import image
@@ -87,3 +87,4 @@ images_test = glob.glob('*/*.jpg')
 image_strings = [str(p) for p in images_test]
 
 print(image_strings)
+
