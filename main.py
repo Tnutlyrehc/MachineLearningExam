@@ -74,20 +74,8 @@ D_test_labels = labels.loc[y_test, 'D']
 Y_train_labels = labels.loc[y_train, 'Y']
 Y_val_labels = labels.loc[y_val, 'Y']
 Y_test_labels = labels.loc[y_test, 'Y']
-print(D_train_labels)
-'''print(len(X_train), len(X_val), len(X_test))
 
-print(labels.loc[np.array(y_train)-1, 'Y'])
-plt.imshow(X_train[0])
-plt.show()'''
-'''y_index_train = [int(re.sub("[^0-9]", "",item[1])) for item in X_train]
-y_index_test = [int(re.sub("[^0-9]", "",item[1])) for item in X_test]
-y_index_val = [int(re.sub("[^0-9]", "",item[1])) for item in X_val]
-
-train_labels = labels.loc[labels['Index'].isin(y_index_train)]
-test_labels = labels.loc[labels['Index'].isin(y_index_test)]
-val_labels = labels.loc[labels['Index'].isin(y_index_val)]'''
-'''# Defining the model for CC
+# Defining the model for CC
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
@@ -104,11 +92,11 @@ ConvMod_CC.compile( optimizer='adam',
                     loss='binary_crossentropy',
                     metrics=['accuracy'])
 
-CC_fit = ConvMod_CC.fit(X_train, CC_train_labels, epochs=2, batch_size=32, validation_data= (X_val, CC_val_labels))
+CC_fit = ConvMod_CC.fit(X_train, CC_train_labels, epochs=15, batch_size=32, validation_data= (X_val, CC_val_labels))
 results = ConvMod_CC.evaluate(X_test, CC_test_labels,  batch_size=16)
 ConvMod_CC.save('CC.h5')
-'''
-'''
+
+
 # Defining the model for D
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
@@ -126,10 +114,10 @@ ConvMod_D.compile( optimizer='adam',
                     loss='sparse_categorical_crossentropy',
                     metrics=['accuracy'])
 
-D_fit = ConvMod_D.fit(X_train, D_train_labels, epochs=5, batch_size=32, validation_data= (X_val, D_val_labels))
+D_fit = ConvMod_D.fit(X_train, D_train_labels, epochs=15, batch_size=32, validation_data= (X_val, D_val_labels))
 results = ConvMod_D.evaluate(X_test, D_test_labels,  batch_size=16)
 ConvMod_D.save('D.h5')
-'''
+
 # Defining the model for Y
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
@@ -147,7 +135,7 @@ ConvMod_Y.compile( optimizer='adam',
                     loss='sparse_categorical_crossentropy',
                     metrics=['accuracy'])
 
-Y_fit = ConvMod_Y.fit(X_train, Y_train_labels, epochs=5, batch_size=32, validation_data= (X_val, Y_val_labels))
+Y_fit = ConvMod_Y.fit(X_train, Y_train_labels, epochs=15, batch_size=32, validation_data= (X_val, Y_val_labels))
 results = ConvMod_Y.evaluate(X_test, Y_test_labels,  batch_size=16)
 ConvMod_Y.save('Y.h5')
 
@@ -168,8 +156,8 @@ def plot_loss_acc(model_fit):
     axs[1].plot(epochs, val_acc, 'r', label='Validation accuracy')
     axs[1].set_title('Training and validation accuracy')
     plt.show()
-#plot_loss_acc(CC_fit)
-#plot_loss_acc(D_fit)
+plot_loss_acc(CC_fit)
+plot_loss_acc(D_fit)
 plot_loss_acc(Y_fit)
 '''
 # writing it to the three directories
