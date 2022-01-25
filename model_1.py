@@ -14,14 +14,8 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
-
 # Set path to this file location
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
-
-#classes = np.unique(X_train)
-#nClasses = len(classes)
-#print('Total number of outputs : ', nClasses)
-#print('Output classes : ', classes)
 

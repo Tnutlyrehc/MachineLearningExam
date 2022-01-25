@@ -10,7 +10,7 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
+path = 'data'
 
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
@@ -70,9 +70,10 @@ val_labels = labels.loc[labels['Index'].isin(y_index_val)]
 
 # writing it to the three directories
 def write_to_dir (data, type):
-    path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'  + '/' + type
+    path = 'data'  + '/' + type
     for i in range(len(data)):
         image.save_img(os.path.join(path, data[i][1]), data[i][0])
 write_to_dir(X_test, 'test')
 write_to_dir(X_train, 'train')
 write_to_dir(X_val, 'validation')
+
