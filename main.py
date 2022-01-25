@@ -56,24 +56,16 @@ for i in range(1, 12001):
     current_image = tf.image.resize(current_image, (84, 150))
     raw_imgs.append(current_image)
 
-#scaling the data
 raw_imgs = np.array(raw_imgs) / 255
 # splitting the data randomly
-indices = np.array(range(0, 12000))
-X_train, X_test, y_train, y_test = train_test_split(raw_imgs, indices, random_state=42, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(raw_imgs, CC_labels, random_state=42, test_size=0.2)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train ,random_state=42, test_size=0.2)
+X_train.reshape(-1,84,150,3)
+'''
+print(len(X_train), len(X_val), len(X_test))
 
-CC_train_labels = labels.loc[y_train, 'CC']
-CC_val_labels = labels.loc[y_val, 'CC']
-CC_test_labels = labels.loc[y_test, 'CC']
-
-D_train_labels = labels.loc[y_train, 'D']
-D_val_labels = labels.loc[y_val, 'D']
-D_test_labels = labels.loc[y_test, 'D']
-'''print(len(X_train), len(X_val), len(X_test))
-
-print(labels.loc[np.array(y_train)-1, 'Y'])
-plt.imshow(X_train[0])
+print(y_train[20])
+plt.imshow(X_train[20])
 plt.show()'''
 '''y_index_train = [int(re.sub("[^0-9]", "",item[1])) for item in X_train]
 y_index_test = [int(re.sub("[^0-9]", "",item[1])) for item in X_test]
@@ -82,7 +74,7 @@ y_index_val = [int(re.sub("[^0-9]", "",item[1])) for item in X_val]
 train_labels = labels.loc[labels['Index'].isin(y_index_train)]
 test_labels = labels.loc[labels['Index'].isin(y_index_test)]
 val_labels = labels.loc[labels['Index'].isin(y_index_val)]'''
-# Defining the model for CC
+# Defining the model
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
@@ -99,50 +91,10 @@ ConvMod_CC.compile( optimizer='adam',
                     loss='binary_crossentropy',
                     metrics=['accuracy'])
 
-CC_fit = ConvMod_CC.fit(X_train, CC_train_labels, epochs=20, batch_size=32, validation_data= (X_val, CC_val_labels))
-results = ConvMod_CC.evaluate(X_test, CC_test_labels,  batch_size=16)
-CC_fit.save('CC.h5')
-
-# Defining the model for D
-inputs = Input(shape = (84,150, 3))
-y = Conv2D(6, 5, activation='relu')(inputs)
-y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
-y = Conv2D(16, 5, activation='relu')(y)
-y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
-
-x = keras.layers.Flatten()(y)
-x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
-outputs = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
-
-ConvMod_D = Model(inputs, outputs)
-ConvMod_D.summary()
-ConvMod_D.compile( optimizer='adam',
-                    loss='categorical_crossentropy',
-                    metrics=['accuracy'])
-
-D_fit = ConvMod_D.fit(X_train, D_train_labels, epochs=20, batch_size=32, validation_data= (X_val, D_val_labels))
-results = ConvMod_D.evaluate(X_test, D_test_labels,  batch_size=16)
-D_fit.save('D.h5')
+ConvMod_CC.fit(X_train, y_train, epochs=10, batch_size=32)
+results = ConvMod_CC.evaluate(X_test, y_test,  batch_size=16)
 
 print("test loss, test acc:", results)
-def plot_loss_acc(model_fit):
-    history_dict = model_fit.history
-    loss_values = history_dict['loss']
-    val_loss_values = history_dict['val_loss']
-    train_acc = history_dict['accuracy']
-    val_acc = history_dict['val_accuracy']
-    epochs = range(1, len(loss_values) + 1)
-
-    fig, axs = plt.subplots(2)
-    axs[0].plot(epochs, loss_values, 'bo', label='Training loss')
-    axs[0].plot(epochs, val_loss_values, 'b', label='Validation loss')
-    axs[0].set_title('Training and validation loss')
-    axs[1].plot(epochs, train_acc, 'ro', label='Training accuracy')
-    axs[1].plot(epochs, val_acc, 'r', label='Validation accuracy')
-    axs[1].set_title('Training and validation accuracy')
-    plt.show()
-plot_loss_acc(CC_fit)
-
 '''
 # writing it to the three directories
 def write_to_dir (data, type):
