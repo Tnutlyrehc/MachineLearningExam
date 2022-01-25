@@ -16,9 +16,6 @@ path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
 
-TensorFlow is an open source software library for high performance numerical computation. Its flexible architecture allows easy deployment of computation across a variety of platforms (CPUs, GPUs, TPUs), and from desktops to clusters of servers to mobile and edge devices.
-
-Originally developed by researchers and engineers from the Google Brain team within Google's AI organization, it comes with strong support for machine learning and deep learning and the flexible numerical computation core is used across many other scientific domains.
 CC = []
 D = []
 Y = []
@@ -162,7 +159,7 @@ def plot_loss_acc(model_fit):
 plot_loss_acc(CC_fit)
 plot_loss_acc(D_fit)
 plot_loss_acc(Y_fit)
-print('test')
+
 '''
 # writing it to the three directories
 def write_to_dir (data, type):
