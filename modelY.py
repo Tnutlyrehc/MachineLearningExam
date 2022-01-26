@@ -16,6 +16,8 @@ path = 'data'
 
 from main import X_train, CC_train_labels, X_val, CC_val_labels, X_test, CC_test_labels, D_train_labels, D_test_labels, Y_val_labels, Y_train_labels, Y_test_labels, D_val_labels
 
+
+
 callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=3)
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
