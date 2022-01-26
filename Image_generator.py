@@ -51,7 +51,10 @@ labels['CC'] = CC
 labels['D'] = D
 labels['Y'] = Y
 labels['filenames'] = filenames
-labels['CC_string'] = CC_string
+labels['CC_string'] = labels['CC'].astype(str)
+labels['D_string'] = labels['D'].astype(str)
+labels['Y_string'] = labels['Y'].astype(str)
+print(labels.head())
 raw_imgs = []
 
 for i in range(1, 12001):
@@ -92,6 +95,26 @@ train_generator_CC= train_datagenerator.flow_from_dataframe(
                             class_mode='binary',
                             target_size=(150,84),
                             color_mode='rgb')
+
+train_generator_D= train_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_train, :],
+                            directory= path + '/train',
+                            x_col= 'filenames',
+                            y_col='D_string',
+                            batch_size=batch_size,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+
+train_generator_Y= train_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_train, :],
+                            directory= path + '/train',
+                            x_col= 'filenames',
+                            y_col='Y_string',
+                            batch_size=batch_size,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
 # Same for the validation data
 val_datagenerator = image.ImageDataGenerator(rescale=1/255)
 
@@ -105,10 +128,30 @@ val_generator_CC = val_datagenerator.flow_from_dataframe(
                             target_size=(150,84),
                             color_mode='rgb')
 
+val_generator_D = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_val, :],
+                            directory= path + '/validation',
+                            x_col= 'filenames',
+                            y_col='D_string',
+                            batch_size=batch_size,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+
+val_generator_Y = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_val, :],
+                            directory= path + '/validation',
+                            x_col= 'filenames',
+                            y_col='Y_string',
+                            batch_size=batch_size,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+
 val_size = 0.16
 test_size = 0.2
 train_size = 1 - val_size - test_size
-
+'''
 # Defining the model for CC
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
@@ -133,3 +176,55 @@ CC_data_augmentation_fit = ConvMod_CC.fit(train_generator_CC,
                                             validation_steps = 12000 * val_size // batch_size)
 
 ConvMod_CC.save('CC_data_augmentation.h5')
+'''
+'''
+# Defining the model for D
+inputs = Input(shape = (84,150, 3))
+y = Conv2D(6, 5, activation='relu')(inputs)
+y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
+y = Conv2D(16, 5, activation='relu')(y)
+y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
+
+x = keras.layers.Flatten()(y)
+x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
+outputs = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
+
+ConvMod_D = Model(inputs, outputs)
+ConvMod_D.summary()
+ConvMod_D.compile( optimizer='adam',
+                    loss='categorical_crossentropy',
+                    metrics=['accuracy'])
+
+D_data_augmentation_fit = ConvMod_D.fit(train_generator_D,
+                                            steps_per_epoch= 12000 * train_size // batch_size,
+                                            epochs=15,
+                                            validation_data =val_generator_D,
+                                            validation_steps = 12000 * val_size // batch_size)
+
+ConvMod_D.save('D_data_augmentation.h5')
+'''
+
+# Defining the model for Y
+inputs = Input(shape = (84,150, 3))
+y = Conv2D(6, 5, activation='relu')(inputs)
+y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
+y = Conv2D(16, 5, activation='relu')(y)
+y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
+
+x = keras.layers.Flatten()(y)
+x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
+outputs = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
+
+ConvMod_Y = Model(inputs, outputs)
+ConvMod_Y.summary()
+ConvMod_Y.compile( optimizer='adam',
+                    loss='categorical_crossentropy',
+                    metrics=['accuracy'])
+
+Y_data_augmentation_fit = ConvMod_Y.fit(train_generator_Y,
+                                            steps_per_epoch= 12000 * train_size // batch_size,
+                                            epochs=15,
+                                            validation_data =val_generator_Y,
+                                            validation_steps = 12000 * val_size // batch_size)
+
+ConvMod_Y.save('D_data_augmentation.h5')
