@@ -12,7 +12,20 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
+from tensorflow.keras.callbacks import TensorBoard
+
+
 path = 'data'
+
+tensorboard = TensorBoard(
+  log_dir='.\logs',
+  histogram_freq=1,
+  write_images=True
+)
+keras_callbacks = [
+  tensorboard
+]
+
 
 from main import X_train, CC_train_labels, X_val, CC_val_labels, X_test, CC_test_labels, D_train_labels, D_test_labels, Y_val_labels, Y_train_labels, Y_test_labels, D_val_labels
 
@@ -46,3 +59,4 @@ plt.ylabel('Accuracy')
 plt.legend()
 plt.grid()
 plt.show()
+

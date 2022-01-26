@@ -49,8 +49,7 @@ sns.countplot(labels['CC'])
 #plt.show()
 # reading the data to a list
 raw_imgs = []
-CC_labels = labels['CC'].to_numpy()
-print(CC_labels[7])
+
 for i in range(1, 12001):
     current_image = image.load_img(os.path.join(path + '/original_data/' + str(i) + '.jpg'))
     current_image = tf.image.resize(current_image, (84, 150))
