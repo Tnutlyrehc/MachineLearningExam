@@ -11,7 +11,7 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
+path = 'data'
 
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
@@ -74,7 +74,7 @@ D_test_labels = labels.loc[y_test, 'D']
 Y_train_labels = labels.loc[y_train, 'Y']
 Y_val_labels = labels.loc[y_val, 'Y']
 Y_test_labels = labels.loc[y_test, 'Y']
-
+"""
 # Defining the model for CC
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
@@ -158,7 +158,7 @@ def plot_loss_acc(model_fit):
     plt.show()
 plot_loss_acc(CC_fit)
 plot_loss_acc(D_fit)
-plot_loss_acc(Y_fit)
+plot_loss_acc(Y_fit)"""
 
 '''
 # writing it to the three directories
