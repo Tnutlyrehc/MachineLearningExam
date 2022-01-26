@@ -25,7 +25,7 @@ y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 y = Conv2D(16, 5, activation='relu')(y)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
-x = keras.layers.Flatten()(y)
+x = tf.keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
 outputs = Dense(1, activation='sigmoid', kernel_regularizer= regularizers.l2(0.01))(x)
 
@@ -47,7 +47,7 @@ y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 y = Conv2D(16, 5, activation='relu')(y)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
-x = keras.layers.Flatten()(y)
+x = tf.keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
 outputs_D = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
 
@@ -58,7 +58,7 @@ ConvMod_D.compile( optimizer='adam',
                     metrics=['accuracy'])
 
 D_fit = ConvMod_D.fit(X_train, D_train_labels, epochs=25, batch_size=32, validation_data= (X_val, D_val_labels), callbacks = [callback])
-results = ConvMod_D.evaluate(X_test, D_test_labels,  batch_size=16)
+results_D = ConvMod_D.evaluate(X_test, D_test_labels,  batch_size=16)
 ConvMod_D.save('D.h5')
 
 # Defining the model for Y
@@ -68,7 +68,7 @@ y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 y = Conv2D(16, 5, activation='relu')(y)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
-x = keras.layers.Flatten()(y)
+x = tf.keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
 outputs_Y = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
 
@@ -79,7 +79,7 @@ ConvMod_Y.compile( optimizer='adam',
                     metrics=['accuracy'])
 
 Y_fit = ConvMod_Y.fit(X_train, Y_train_labels, epochs=25, batch_size=32, validation_data= (X_val, Y_val_labels), callbacks = [callback])
-results = ConvMod_Y.evaluate(X_test, Y_test_labels,  batch_size=16)
+results_Y = ConvMod_Y.evaluate(X_test, Y_test_labels,  batch_size=16)
 ConvMod_Y.save('Y.h5')
 
 len(CC_fit.history['loss'])
