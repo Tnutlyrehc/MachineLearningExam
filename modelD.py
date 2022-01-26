@@ -37,7 +37,8 @@ D_fit = ConvMod_D.fit(X_train, D_train_labels, epochs=25, batch_size=32, validat
 results_D = ConvMod_D.evaluate(X_test, D_test_labels,  batch_size=16)
 ConvMod_D.save('D.h5')
 
-
+plt.plot(D_fit.history['accuracy'], label='Training accuracy')
+plt.plot(D_fit.history['val_accuracy'], label='Validation accuracy')
 plt.plot(D_fit.history['accuracy'], label='Training accuracy (regularized)')
 plt.plot(D_fit.history['val_accuracy'], label='Validation accuracy (regularized)')
 plt.xlabel('Epoch')
