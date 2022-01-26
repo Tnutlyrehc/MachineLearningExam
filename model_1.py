@@ -16,10 +16,12 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 from keras.preprocessing import image
 # Set path to this file location
-from main import train_labels, path
+from main import path
 from os import listdir
 from os.path import isfile, join
 import glob
+
+
 
 filenames = []
 filenames = glob.glob(path +"train/*.jpg")
@@ -32,7 +34,7 @@ train_datagen = ImageDataGenerator(rescale=1./255,
                                     horizontal_flip=True,
                                     brightness_range=[0.5, 1.3])
 
-batch_size=16
+batch_size=32
 train_datagenerator = image.ImageDataGenerator(
                              rescale=1./255,
                              rotation_range=20,
@@ -77,6 +79,6 @@ Incep_simple_model.summary()
 Incep_simple_model.fit(
     train_generator_CC,
     steps_per_epoch= 7680 * train_size // batch_size,
-    epochs=10)
+    epochs=1)
 
 
