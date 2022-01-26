@@ -36,6 +36,7 @@ def build_model_neural_sequential(
         if dropout:
             lay.append(Dropout(0.2))
 
+
         # Output layer:
         # nb_classes is 11 for ModelD and ModelY
         # nb_classes is 2 for Model CC
@@ -85,8 +86,9 @@ def build_boosting(loss,
 
     return gb_model
 
+
 # Wrapping the Random Forest and Boosting models
-# Boosting first, then take the final adjusted dataset and insert it into a Random Forest Model:
+# Boosting first, then take the final adjusted dataset(the estimators) and insert it into a Random Forest Model:
 # After training the boosting model, call this function and use the returned model to train the random forest??
 def merge_rf_boost(
         rf_model,
@@ -98,17 +100,24 @@ def merge_rf_boost(
     return b_model
 
 
-def build_model_CC():
-    return modelCC
+def get_model_CC(model):
+    current_CC_model = model
+    return current_CC_model
 
 
-def build_model_D():
-    return modelD
+def get_model_D(model):
+    current_D_model = model
+    return current_D_model
 
 
-def build_model_Y():
-    return modelY
+def get_model_Y(model):
+    current_Y_model = model
+    return current_Y_model
 
-
-def merged_CCDY():
-    return modelCCDY
+# Sequence accuracy: prediction is correct when all three sub-models are making correct predictions (1 point),
+# Character accuracy: prediction is 1/3 correct (1/3 point) if one sub model is making correct predictions,
+# in addition to standard accuracy measures.
+def combined_predictions(cc_predict, d_predict, y_predict):
+    seq_score = cc_predict + d_predict + y_predict
+    char_predict = 0
+    return
