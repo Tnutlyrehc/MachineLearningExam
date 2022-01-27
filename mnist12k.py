@@ -21,7 +21,7 @@ def load_image(filename):
 # load an image and predict the class
 def run_example():
     # load the image
-    img = load_image('data/test/3606.jpg')
+    img = load_image('data/singledit/2_124.jpg')
     # load model
     model = load_model('final_model.h5')
     # predict the class
