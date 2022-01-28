@@ -76,3 +76,32 @@ def build_cnn_model_resnet(ccmodel, dmodel, ymodel):
         y_model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
         y_model.summary()
         return y_model
+
+
+def build_cnn_model_default(ccmodel, dmodel, ymodel):
+    CCMODEL = ccmodel
+    DMODEL = dmodel
+    YMODEL = ymodel
+    input = input_layer
+    x = Conv2D(filters=32, padding='same', kernel_size=(3, 3))(input)
+    x = Conv2D(filters=32, padding='same', kernel_size=(3, 3))(x)
+    x = Conv2D(filters=32, padding='same', kernel_size=(3, 3))(x)
+    x = Flatten()(x)
+    x = Dense(1 if CCMODEL else 11, activation='sigmoid' if CCMODEL else 'softmax')(x)
+
+    opt = Adam(learning_rate=0.001)
+    if CCMODEL:
+        cc_model = Model(input_layer, x, name='CC model')
+        cc_model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['binary_accuracy'])
+        cc_model.summary()
+        return cc_model
+    elif DMODEL:
+        d_model = Model(input_layer, x, name='D model')
+        d_model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        d_model.summary()
+        return d_model
+    elif YMODEL:
+        y_model = Model(input_layer, x, name='Y model')
+        y_model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        y_model.summary()
+        return y_model
