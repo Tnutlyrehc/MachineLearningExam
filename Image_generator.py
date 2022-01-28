@@ -15,7 +15,6 @@ from main import X_test as X_test_np
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-import focal_loss
 from load_data import labels, X_train, X_test, X_val, y_train,y_test, y_val
 
 '''

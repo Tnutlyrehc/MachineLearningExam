@@ -11,8 +11,10 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
-
+from load_data import labels, X_train, X_test, X_val, y_train,y_test, y_val
+from cnn_model import build_cnn_model_default
+path = 'data'
+'''
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
 
@@ -43,16 +45,15 @@ for i in range(0, len(labels)):
 labels['CC'] = CC
 labels['D'] = D
 labels['Y'] = Y
-'''
+
 # exploratory data analysis - summary statistics
 
-ax = sns.countplot(labels['D'])
+ax = sns.countplot(labels['Y'])
 plt.bar_label(ax.containers[0], label_type='edge')
-plt.title('Amount of representations of classes for the D variable')
+plt.title('Amount of representations of classes for the Y variable')
 plt.savefig('Y_barplot.jpg')
-plt.title('Amount of representations of classes for the D variable')
-plt.savefig('D_barplot.jpg')'''
-
+plt.title('Amount of representations of classes for the Y variable')
+plt.savefig('Y_barplot.jpg')
 # reading the data to a list
 raw_imgs = []
 
@@ -79,6 +80,7 @@ D_test_labels = labels.loc[y_test, 'D']
 Y_train_labels = labels.loc[y_train, 'Y']
 Y_val_labels = labels.loc[y_val, 'Y']
 Y_test_labels = labels.loc[y_test, 'Y']
+'''
 """
 # Defining the model for CC
 inputs = Input(shape = (84,150, 3))
@@ -232,3 +234,5 @@ Incep_simple_model.fit(
     epochs=10)
 '''
 
+CC_model = build_cnn_model_default(True, False, False)
+hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]))
