@@ -2,7 +2,7 @@ import torch
 from torchvision import models
 from PIL import Image
 
-model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
+model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
 
 from torchvision import transforms
 
@@ -38,6 +38,7 @@ for i in range(top5_prob.size(0)):
     print(categories[top5_catid[i]], top5_prob[i].item())
 
 """
+Resnet18
 Probability of 190.jpg from test has; 
 bucket 0.00891981739550829
 hook 0.007199604529887438
@@ -45,4 +46,10 @@ plunger 0.006685016211122274
 ashcan 0.005556921940296888
 water jug 0.005497334524989128
 
+Resnet50
+hook 0.006756455637514591
+bucket 0.0057375249452888966
+plunger 0.005515099037438631
+pole 0.004916656296700239
+tennis ball 0.0045758699998259544
 """
