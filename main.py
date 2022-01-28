@@ -11,7 +11,7 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-path = 'data'
+path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
 
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
@@ -43,10 +43,16 @@ for i in range(0, len(labels)):
 labels['CC'] = CC
 labels['D'] = D
 labels['Y'] = Y
-
+'''
 # exploratory data analysis - summary statistics
-sns.countplot(labels['CC'])
-#plt.show()
+
+ax = sns.countplot(labels['D'])
+plt.bar_label(ax.containers[0], label_type='edge')
+plt.title('Amount of representations of classes for the D variable')
+plt.savefig('Y_barplot.jpg')
+plt.title('Amount of representations of classes for the D variable')
+plt.savefig('D_barplot.jpg')'''
+
 # reading the data to a list
 raw_imgs = []
 

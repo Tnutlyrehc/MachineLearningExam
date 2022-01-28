@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import imblearn
 import os
 import re
 from PIL import Image
@@ -7,84 +8,42 @@ import tensorflow as tf
 import seaborn as sns
 import matplotlib.pyplot as plt
 import keras
+import sklearn
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import image
+from main import X_test as X_test_np
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
-path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'
+import focal_loss
+from load_data import labels, X_train, X_test, X_val, y_train,y_test, y_val
 
-# creating the labels from CSV file
-labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
+'''
+# SMOTE technique for oversampling, does not work well for image data, because it needs one big feature array
+smote = imblearn.over_sampling.SMOTE('minority')
+print(X_train.shape, y_train.shape)
 
-CC = []
-D = []
-Y = []
-CC_string = []
-for i in range(0, len(labels)):
-    current_year = labels.iat[i, 1]
-    digits = [int(x) for x in str(current_year)]
-    # check for century
-    if len(digits) > 4:
-        CC.append(1)
-        CC_string.append('not 18')
-        D.append(10)
-        Y.append(10)
-    elif len(digits) < 4:
-        CC.append(1)
-        CC_string.append('not 18')
-        D.append(digits[-2])
-        Y.append(digits[-1])
-    else:
-        if digits[0] == 1 and digits[1] == 8:
-            CC.append(0)
-            CC_string.append('18')
-        else:
-            CC.append(1)
-            CC_string.append('not 18')
-        D.append(digits[-2])
-        Y.append(digits[-1])
-filenames = []
-for i in labels['Index']:
-    filenames.append(str(i) + '.jpg')
-labels['CC'] = CC
-labels['D'] = D
-labels['Y'] = Y
-labels['filenames'] = filenames
-labels['CC_string'] = labels['CC'].astype(str)
-labels['D_string'] = labels['D'].astype(str)
-labels['Y_string'] = labels['Y'].astype(str)
-print(labels.head())
-raw_imgs = []
+X_sm_train, y_sm_train = smote.fit_resample(X_train, labels.Y[y_train])
 
-for i in range(1, 12001):
-    current_image = image.load_img(os.path.join(path + '/original_data/' + str(i) + '.jpg'))
-    raw_imgs.append(current_image)
+print(X_sm_train.shape, y_sm_train.shape)
+print(X_sm_train.shape, y_sm_train.shape)
+X_train = X_sm_train.reshape(-1,84,150,3)
 
-# splitting the data randomly
-indices = np.array(range(0, 12000))
-X_train, X_test, y_train, y_test = train_test_split(raw_imgs, indices, random_state=42, test_size=0.2)
-X_train, X_val, y_train, y_val = train_test_split(X_train, y_train ,random_state=42, test_size=0.2)
+print(X_train.shape)
+print(X_train[0].shape)
+img = Image.fromarray(X_train[4], 'RGB')
+img.show()
 
-# writing it to the three directories
-def write_to_dir (data, type, filenames):
-    path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data' + '/' + type
-    for i in range(len(data)):
-        image.save_img(path + '/' + str(filenames[i]) + '.jpg', data[i])
-
-test_filename = np.array(y_test) + 1
-train_filename = np.array(y_train) + 1
-val_filename = np.array(y_val) + 1
-write_to_dir(X_test, 'test', test_filename)
-write_to_dir(X_train, 'train', train_filename)
-write_to_dir(X_val, 'validation', val_filename)
+unique, counts = np.unique(y_sm_train, return_counts=True)
+print(dict(zip(unique, counts)))
+'''
+path = 'data'
 
 batch_size=16
 train_datagenerator = image.ImageDataGenerator(
                              rescale=1./255,
                              rotation_range=20,
-                             zoom_range=0.2,
-                             horizontal_flip=True)
+                             zoom_range=0.2)
 
 train_generator_CC= train_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_train, :],
@@ -187,23 +146,57 @@ y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
 x = keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu', kernel_regularizer= regularizers.l2(0.01))(x)
-outputs = Dense(11, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
+outputs = Dense(5, activation='softmax', kernel_regularizer= regularizers.l2(0.01))(x)
 
 ConvMod_D = Model(inputs, outputs)
 ConvMod_D.summary()
+loss_func = focal_loss.SparseCategoricalFocalLoss(gamma=2)
 ConvMod_D.compile( optimizer='adam',
                     loss='categorical_crossentropy',
                     metrics=['accuracy'])
 
 D_data_augmentation_fit = ConvMod_D.fit(train_generator_D,
                                             steps_per_epoch= 12000 * train_size // batch_size,
-                                            epochs=15,
+                                            epochs=50,
                                             validation_data =val_generator_D,
                                             validation_steps = 12000 * val_size // batch_size)
 
 ConvMod_D.save('D_data_augmentation.h5')
 '''
 
+# Defining the test data generators
+test_datagen_D = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_test, :],
+                            directory= path + '/test',
+                            x_col= 'filenames',
+                            y_col='D_string',
+                            batch_size=batch_size,
+                            shuffle=False,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+test_datagen_Y = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_test, :],
+                            directory= path + '/test',
+                            x_col= 'filenames',
+                            y_col='Y_string',
+                            batch_size=batch_size,
+                            shuffle=False,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+test_datagen_CC = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_test, :],
+                            directory= path + '/test',
+                            x_col= 'filenames',
+                            y_col='CC_string',
+                            batch_size=batch_size,
+                            shuffle=False,
+                            class_mode='binary',
+                            target_size=(150,84),
+                            color_mode='rgb')
+
+'''
 # Defining the model for Y
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(6, 5, activation='relu')(inputs)
@@ -227,4 +220,4 @@ Y_data_augmentation_fit = ConvMod_Y.fit(train_generator_Y,
                                             validation_data =val_generator_Y,
                                             validation_steps = 12000 * val_size // batch_size)
 
-ConvMod_Y.save('D_data_augmentation.h5')
+ConvMod_Y.save('Y_data_augmentation.h5')'''

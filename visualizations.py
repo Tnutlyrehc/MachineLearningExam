@@ -9,7 +9,7 @@ from numpy import expand_dims
 import sys
 
 
-model = keras.models.load_model('D.h5')
+model = keras.models.load_model('models/D.h5')
 model.summary()
 
 for layer in model.layers:
