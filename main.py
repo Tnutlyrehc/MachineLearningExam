@@ -238,3 +238,16 @@ Incep_simple_model.fit(
 
 CC_model = build_cnn_model_default(True, False, False)
 hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]))
+
+"""
+Epoch 11/15
+240/240 [==============================] - 115s 480ms/step - loss: 0.0379 - accuracy: 0.9883 - val_loss: 0.1081 - val_accuracy: 0.9740
+Epoch 12/15
+240/240 [==============================] - 115s 480ms/step - loss: 0.0208 - accuracy: 0.9936 - val_loss: 0.0986 - val_accuracy: 0.9734
+Epoch 13/15
+240/240 [==============================] - 115s 479ms/step - loss: 0.0177 - accuracy: 0.9951 - val_loss: 0.1166 - val_accuracy: 0.9688
+Epoch 14/15
+240/240 [==============================] - 114s 473ms/step - loss: 0.0244 - accuracy: 0.9926 - val_loss: 0.1265 - val_accuracy: 0.9646
+Epoch 15/15
+240/240 [==============================] - 112s 466ms/step - loss: 0.0126 - accuracy: 0.9964 - val_loss: 0.1310 - val_accuracy: 0.9724
+"""

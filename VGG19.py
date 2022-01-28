@@ -10,7 +10,8 @@ from keras.applications.vgg19 import VGG19
 from keras.layers import Dense, Flatten
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-from load_data import X_train, X_test, X_val, y_train, y_test, y_val
+from load_data import X_train, X_test, X_val, y_train, y_test, y_val, labels
+
 
 
 vgg19 = VGG19(weights = 'imagenet',
@@ -18,22 +19,22 @@ vgg19 = VGG19(weights = 'imagenet',
               input_shape=(84, 150, 3)
               )
 
-model = Sequential()
-model.add(vgg19)
-model.add(Flatten())
-model.add(Dense(10, activation='softmax'))
-model.compile(loss='categorical_crossentropy',
+CC_model = Sequential()
+CC_model.add(vgg19)
+CC_model.add(Flatten())
+CC_model.add(Dense(1, activation='sigmoid'))
+CC_model.compile(loss='binary_crossentropy',
               optimizer='sgd',
               metrics=['accuracy'])
 
-model.summary()
+CC_model.summary()
 
-history = model.fit(X_train, y_train,
+history = CC_model.fit(X_train, labels.CC[y_train],
                     epochs=20,
                     batch_size=128,
                     validation_data=(X_test, y_test))
 
-fig,axes=plt.subplots(nrows=1, ncols=2, figsize=(16,6))
+fig, axes=plt.subplots(nrows=1, ncols=2, figsize=(16,6))
 
 axes[0].plot(history.history['accuracy'])
 axes[0].plot(history.history['val_accuracy'])
