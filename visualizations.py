@@ -8,18 +8,16 @@ from matplotlib import pyplot as plt
 from numpy import expand_dims
 import sys
 
-
-model = keras.models.load_model('models/D.h5')
+model = keras.models.load_model('D.h5')
 model.summary()
 
 for layer in model.layers:
-	# check for convolutional layer
-	if 'conv' not in layer.name:
-		continue
-	# get filter weights
-	filters, biases = layer.get_weights()
-	print(layer.name, filters.shape)
-
+    # check for convolutional layer
+    if 'conv' not in layer.name:
+        continue
+    # get filter weights
+    filters, biases = layer.get_weights()
+    print(layer.name, filters.shape)
 
 filters, biases = model.layers[0].get_weights()
 # normalize filter values to 0-1 so we can visualize them
@@ -45,13 +43,12 @@ plt.close()
 pyplot.show()
 
 for i in range(len(model.layers)):
-	layer = model.layers[i]
-	# check for convolutional layer
-	if 'conv' not in layer.name:
-		continue
-	# summarize output shape
-	print(i, layer.name, layer.output.shape)
-
+    layer = model.layers[i]
+    # check for convolutional layer
+    if 'conv' not in layer.name:
+        continue
+    # summarize output shape
+    print(i, layer.name, layer.output.shape)
 
 model.summary()
 model = Model(inputs=model.inputs, outputs=model.layers[0].output)
@@ -69,6 +66,13 @@ featuremaps = model.predict(img)
 square = 4
 ix = 1
 
+filters, biases = model.layers[0].get_weights()
+# normalize filter values to 0-1 so we can visualize them
+f_min, f_max = filters.min(), filters.max()
+filters = (filters - f_min) / (f_max - f_min)
+# plot first few filters
+n_filters, ix = 6, 1
+
 for _ in range(square):
     for _ in range(square):
         # specify subplot and turn of axis
@@ -76,9 +80,9 @@ for _ in range(square):
         ax.set_xticks([])
         ax.set_yticks([])
         # plot filter channel in grayscale
-        plt.imshow(featuremaps[0, :, :, ix-1], cmap='brg')
+        plt.imshow(featuremaps[0, :, :, ix - 1], cmap='brg')
         ix += 1
-	# show the figure
+    # show the figure
 filename = sys.argv[0].split('/')[-1]
 plt.savefig(filename + 'map_plt_brg.png')
 plt.close()
