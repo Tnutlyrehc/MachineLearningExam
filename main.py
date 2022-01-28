@@ -11,6 +11,7 @@ from keras.preprocessing import image
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
+
 from load_data import labels, X_train, X_test, X_val, y_train,y_test, y_val
 from cnn_model import build_cnn_model_default
 path = 'data'
@@ -233,6 +234,7 @@ Incep_simple_model.fit(
     steps_per_epoch= 7680 * train_size // batch_size,
     epochs=10)
 '''
+
 
 CC_model = build_cnn_model_default(True, False, False)
 hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]))
