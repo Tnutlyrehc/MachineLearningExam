@@ -167,72 +167,27 @@ plot_loss_acc(CC_fit)
 plot_loss_acc(D_fit)
 plot_loss_acc(Y_fit)"""
 
-'''
-# writing it to the three directories
-def write_to_dir (data, type):
-    path = 'C:/Users/felix/Documents/_FWM/Master/Semester 3/Applied Machine Learning/Exam/data'  + '/' + type
-    for i in range(len(data)):
-        image.save_img(os.path.join(path, data[i][1]), data[i][0])
-write_to_dir(X_test, 'test')
-write_to_dir(X_train, 'train')
-write_to_dir(X_val, 'validation')'''
-'''
-batch_size=16
-train_datagenerator = image.ImageDataGenerator(
-                             rescale=1./255,
-                             rotation_range=20,
-                             zoom_range=0.2,
-                             horizontal_flip=True)
-
-train_generator_CC= train_datagenerator.flow_from_dataframe(
-                            dataframe= train_labels['CC'],
-                            directory= path + '/train',
-                            x_col= "Filenames",
-                            y_col=[0,1],
-                            batch_size=batch_size,
-                            class_mode="binary",
-                            target_size=(150,84),
-                            color_mode='rgb')
-train_generator_CC = train_datagenerator.flow_from_directory(
-                                                    path + '/train',
-                                                    save_to_dir=path + '/data_augmentation',
-                                                    batch_size=batch_size,
-                                                    target_size=(150,84),
-                                                    color_mode='rgb',
-                                                    class_mode='binary')
-
-
-# setting global variabels
-val_size = 0.15
-test_size = 0.1
-train_size = 1 - val_size - test_size
-
-inputs = Input(shape = (150,84,3))
-x1 = Conv2D(8, (3,3), activation='relu', padding='same')(inputs)
-x2 = Conv2D(8, (5,5), activation='relu', padding='same')(inputs)
-x3 = Conv2D(16, (2,2), activation='relu', padding='same')(inputs)
-y = Concatenate()([x1, x2, x3])
+# Defining the model for CC
+inputs = Input(shape = (84,150, 3))
+y = Conv2D(6, 5, activation='relu')(inputs)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
-print(y.shape)
+y = Conv2D(16, 5, activation='relu')(y)
+y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
+
 x = keras.layers.Flatten()(y)
-print(x.shape)
-x = Dropout(0.5)(x)
-x = Dense(32, activation= 'relu', kernel_regularizer=regularizers.l2(0.001))(x)
-x = Dense(64, activation= 'relu', kernel_regularizer=regularizers.l2(0.001))(x)
+x = Dense(128, activation= 'relu')(x)
 outputs = Dense(1, activation='sigmoid')(x)
 
-Incep_simple_model = Model(inputs, outputs)
-Incep_simple_model.compile( optimizer='adam',
-			   loss='binary_crossentropy',
-			   metrics=['accuracy'])
+ConvMod_CC = Model(inputs, outputs)
+ConvMod_CC.summary()
+ConvMod_CC.compile( optimizer='adam',
+                    loss='binary_crossentropy',
+                    metrics=['accuracy'])
 
-Incep_simple_model.summary()
+CC_fit = ConvMod_CC.fit(X_train, labels.CC[y_train], epochs=15, batch_size=32, validation_data= (X_val, labels.CC[y_val]))
 
-Incep_simple_model.fit(
-    train_generator_CC,
-    steps_per_epoch= 7680 * train_size // batch_size,
-    epochs=10)
+np.save('my_history.npy', CC_fit.history)
+
 '''
-
 CC_model = build_cnn_model_default(True, False, False)
-hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]))
+hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]), batch_size=16)'''

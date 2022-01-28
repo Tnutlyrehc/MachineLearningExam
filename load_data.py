@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-import imblearn
 import os
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
@@ -50,7 +49,7 @@ labels['filenames'] = filenames
 labels['CC_string'] = labels['CC'].astype(str)
 labels['D_string'] = labels['D'].astype(str)
 labels['Y_string'] = labels['Y'].astype(str)
-print(labels.head())
+
 
 raw_imgs = []
 
