@@ -1,9 +1,19 @@
 import numpy as np
 import pandas as pd
 import os
+import re
+from PIL import Image
 import tensorflow as tf
+import seaborn as sns
+import matplotlib.pyplot as plt
+import keras
+import sklearn
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import image
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
+from tensorflow.keras import regularizers
+
 
 path = 'data'
 # creating the labels from CSV file
@@ -53,8 +63,6 @@ labels['Y_string'] = labels['Y'].astype(str)
 
 raw_imgs = []
 
-'''
-# writing it to three directories for data generators
 for i in range(1, 12001):
     current_image = image.load_img(os.path.join(path + '/original_data/' + str(i) + '.jpg'))
     raw_imgs.append(current_image)
@@ -63,7 +71,7 @@ for i in range(1, 12001):
 indices = np.array(range(0, 12000))
 X_train, X_test, y_train, y_test = train_test_split(raw_imgs, indices, random_state=42, test_size=0.2)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train ,random_state=42, test_size=0.2)
-
+# writing it to three directories for data generators
 def write_to_dir (data, type, filenames):
     path = 'data' + '/' + type
     for i in range(len(data)):
@@ -75,7 +83,7 @@ val_filename = np.array(y_val) + 1
 write_to_dir(X_test, 'test', test_filename)
 write_to_dir(X_train, 'train', train_filename)
 write_to_dir(X_val, 'validation', val_filename)
-'''
+
 # preparing numpy versions for 'normal' training
 raw_imgs = []
 
