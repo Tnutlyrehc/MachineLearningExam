@@ -59,7 +59,7 @@ labels['filenames'] = filenames
 labels['CC_string'] = labels['CC'].astype(str)
 labels['D_string'] = labels['D'].astype(str)
 labels['Y_string'] = labels['Y'].astype(str)
-print(labels.head())
+
 
 raw_imgs = []
 
