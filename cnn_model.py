@@ -91,17 +91,17 @@ def build_cnn_model_default(ccmodel, dmodel, ymodel):
 
     opt = Adam(learning_rate=0.001)
     if CCMODEL:
-        cc_model = Model(input_layer, x, name='CC model')
+        cc_model = Model(input, x, name='CC model')
         cc_model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['binary_accuracy'])
         cc_model.summary()
         return cc_model
     elif DMODEL:
-        d_model = Model(input_layer, x, name='D model')
+        d_model = Model(input, x, name='D model')
         d_model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
         d_model.summary()
         return d_model
     elif YMODEL:
-        y_model = Model(input_layer, x, name='Y model')
+        y_model = Model(input, x, name='Y model')
         y_model.compile(optimizer=opt, loss='sparse_categorical_crossentropy', metrics=['accuracy'])
         y_model.summary()
         return y_model
