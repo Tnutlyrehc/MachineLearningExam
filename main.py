@@ -240,6 +240,48 @@ CC_model = build_cnn_model_default(True, False, False)
 hist = CC_model.fit(X_train, labels.CC[y_train], epochs=15, validation_data=(X_val,labels.CC[y_val]))
 
 """
+(7680, 84, 150, 3)
+Model: "modelCC"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ input_1 (InputLayer)        [(None, 84, 150, 3)]      0         
+                                                                 
+ conv2d (Conv2D)             (None, 84, 150, 32)       896       
+                                                                 
+ conv2d_1 (Conv2D)           (None, 84, 150, 32)       9248      
+                                                                 
+ conv2d_2 (Conv2D)           (None, 84, 150, 32)       9248      
+                                                                 
+ flatten (Flatten)           (None, 403200)            0         
+                                                                 
+ dense (Dense)               (None, 1)                 403201    
+                                                                 
+=================================================================
+Total params: 422,593
+Trainable params: 422,593
+Non-trainable params: 0
+_________________________________________________________________
+Epoch 1/15
+240/240 [==============================] - 114s 475ms/step - loss: 2.5248 - accuracy: 0.9445 - val_loss: 0.1334 - val_accuracy: 0.9661
+Epoch 2/15
+240/240 [==============================] - 111s 463ms/step - loss: 0.1230 - accuracy: 0.9710 - val_loss: 0.1003 - val_accuracy: 0.9698
+Epoch 3/15
+240/240 [==============================] - 121s 503ms/step - loss: 0.0936 - accuracy: 0.9770 - val_loss: 0.1074 - val_accuracy: 0.9698
+Epoch 4/15
+240/240 [==============================] - 119s 495ms/step - loss: 0.0771 - accuracy: 0.9784 - val_loss: 0.0940 - val_accuracy: 0.9698
+Epoch 5/15
+240/240 [==============================] - 115s 478ms/step - loss: 0.0648 - accuracy: 0.9802 - val_loss: 0.0868 - val_accuracy: 0.9698
+Epoch 6/15
+240/240 [==============================] - 112s 467ms/step - loss: 0.0545 - accuracy: 0.9841 - val_loss: 0.0838 - val_accuracy: 0.9745
+Epoch 7/15
+240/240 [==============================] - 112s 468ms/step - loss: 0.0518 - accuracy: 0.9854 - val_loss: 0.0903 - val_accuracy: 0.9745
+Epoch 8/15
+240/240 [==============================] - 113s 472ms/step - loss: 0.0419 - accuracy: 0.9875 - val_loss: 0.0970 - val_accuracy: 0.9698
+Epoch 9/15
+240/240 [==============================] - 110s 458ms/step - loss: 0.0350 - accuracy: 0.9911 - val_loss: 0.1297 - val_accuracy: 0.9714
+Epoch 10/15
+240/240 [==============================] - 111s 463ms/step - loss: 0.0326 - accuracy: 0.9914 - val_loss: 0.3256 - val_accuracy: 0.9661
 Epoch 11/15
 240/240 [==============================] - 115s 480ms/step - loss: 0.0379 - accuracy: 0.9883 - val_loss: 0.1081 - val_accuracy: 0.9740
 Epoch 12/15
@@ -250,4 +292,6 @@ Epoch 14/15
 240/240 [==============================] - 114s 473ms/step - loss: 0.0244 - accuracy: 0.9926 - val_loss: 0.1265 - val_accuracy: 0.9646
 Epoch 15/15
 240/240 [==============================] - 112s 466ms/step - loss: 0.0126 - accuracy: 0.9964 - val_loss: 0.1310 - val_accuracy: 0.9724
+
+Process finished with exit code 0
 """
