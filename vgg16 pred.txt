@@ -1,0 +1,65 @@
+Ricardo
+bathing_cap (87.57%)
+
+2waterbottle
+web_site (88.36%)
+
+617D----
+dumbbell (58.09%)
+
+book
+book_jacket (31.61%)
+
+candy
+confectionery (57.15%)
+
+hammer
+hammer (43.43%)
+
+stop sign
+street_sign (42.78%)
+
+kid
+brassiere (22.18%)
+
+man
+academic_gown (16.23%)
+
+pc
+notebook (35.03%)
+
+shoes
+starfish (62.32%)
+
+Tesla
+Egyptian_cat (67.11%)
+
+------------------
+
+dida / data/ test / 
+
+71 (1838)
+hook (14.95%)
+
+107 (1805)
+thimble (7.20%)
+
+
+566 (1819)
+tick (32.55%)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
