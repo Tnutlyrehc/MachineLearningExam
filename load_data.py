@@ -59,8 +59,8 @@ labels['filenames'] = filenames
 labels['CC_string'] = labels['CC'].astype(str)
 labels['D_string'] = labels['D'].astype(str)
 labels['Y_string'] = labels['Y'].astype(str)
-
-
+'''
+# writing it to three directories for data generators
 raw_imgs = []
 
 for i in range(1, 12001):
@@ -71,7 +71,7 @@ for i in range(1, 12001):
 indices = np.array(range(0, 12000))
 X_train, X_test, y_train, y_test = train_test_split(raw_imgs, indices, random_state=42, test_size=0.2)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train ,random_state=42, test_size=0.2)
-# writing it to three directories for data generators
+
 def write_to_dir (data, type, filenames):
     path = 'data' + '/' + type
     for i in range(len(data)):
@@ -82,7 +82,7 @@ train_filename = np.array(y_train) + 1
 val_filename = np.array(y_val) + 1
 write_to_dir(X_test, 'test', test_filename)
 write_to_dir(X_train, 'train', train_filename)
-write_to_dir(X_val, 'validation', val_filename)
+write_to_dir(X_val, 'validation', val_filename)'''
 
 # preparing numpy versions for 'normal' training
 raw_imgs = []

@@ -39,10 +39,11 @@ print(dict(zip(unique, counts)))
 path = 'data'
 
 batch_size=16
-train_datagenerator = image.ImageDataGenerator(
+train_datagenerator = image.(
                              rescale=1./255,
                              rotation_range=20,
-                             zoom_range=0.2)
+                             zoom_range=0.2,
+                            shear_range= 0.2)
 
 train_generator_CC= train_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_train, :],
