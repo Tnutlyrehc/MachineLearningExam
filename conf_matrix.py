@@ -30,6 +30,7 @@ test_datagen_Y = val_datagenerator.flow_from_dataframe(
                             class_mode='categorical',
                             target_size=(150,84),
                             color_mode='rgb')
+print('test')
 def conf_matrix(filename_model, filename_fig, test_data, true_labels, variable, data_gen = False):
 
     model = keras.models.load_model(filename_model)
@@ -80,3 +81,5 @@ def char_acc (true_labels_CC, true_labels_D, true_labels_Y, pred_CC, pred_D, pre
             score = score + 1/3
     acc = score / n
     return acc
+
+true_labels_CC
