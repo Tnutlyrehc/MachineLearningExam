@@ -44,5 +44,28 @@ def conf_matrix(filename_model, filename_fig, test_data, true_labels, variable, 
     plt.xlabel('Prediction')
     plt.ylabel('True')
     plt.savefig(filename_fig)
+
 conf_matrix(filename_model='models/Y_data_augmentation.h5', test_data=test_datagen_Y, true_labels=labels.Y[y_test],
             filename_fig= 'plots/Y_data_aug_pred_conf_matrix.jpg', variable='Y', data_gen=True)
+
+def seq_acc (true_labels_CC, true_labels_D, true_labels_Y, pred_CC, pred_D, pred_Y):
+    score = 0
+    n = len(true_labels_CC)
+    for i in range(0, n):
+        if true_labels_CC[i] == pred_CC[i] and true_labels_D[i] == pred_D[i] and true_labels_Y[i] == pred_Y[i]:
+            score = score + 1
+    acc = score / n
+    return acc
+
+def char_acc (true_labels_CC, true_labels_D, true_labels_Y, pred_CC, pred_D, pred_Y):
+    score = 0
+    n = len(true_labels_CC)
+    for i in range(0, n):
+        if true_labels_CC[i] == pred_CC[i]:
+            score = score + 1/3
+        if true_labels_D[i] == pred_D[i]:
+            score = score + 1/3
+        if true_labels_Y[i] == pred_Y[i]:
+            score = score + 1/3
+    acc = score / n
+    return acc
