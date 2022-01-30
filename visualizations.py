@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 from numpy import expand_dims
 import sys
 
-model = keras.models.load_model('models/D.h5')
+model = keras.models.load_model('models/CC.h5')
 model.summary()
 
 for layer in model.layers:
@@ -19,7 +19,7 @@ for layer in model.layers:
     filters, biases = layer.get_weights()
     print(layer.name, filters.shape)
 
-filters, biases = model.layers[0].get_weights()
+filters, biases = model.layers[1].get_weights()
 # normalize filter values to 0-1 so we can visualize them
 f_min, f_max = filters.min(), filters.max()
 filters = (filters - f_min) / (f_max - f_min)
@@ -38,7 +38,7 @@ for i in range(n_filters):
         ix += 1
 
 filename = sys.argv[0].split('/')[-1]
-plt.savefig(filename + 'filter_plt_brg.png')
+plt.savefig(filename + 'filter_plt_brg5.png')
 plt.close()
 pyplot.show()
 
@@ -53,7 +53,7 @@ for i in range(len(model.layers)):
 model.summary()
 model = Model(inputs=model.inputs, outputs=model.layers[0].output)
 
-img = load_img('data/test/190.jpg', target_size=(200, 200))
+img = load_img('data/test/9849.jpg', target_size=(200, 200))
 # convert the image to an array
 img = img_to_array(img)
 # expand dimensions so that it represents a single 'sample'
@@ -84,6 +84,5 @@ for _ in range(square):
         ix += 1
     # show the figure
 filename = sys.argv[0].split('/')[-1]
-plt.savefig(filename + 'map_plt_brg.png')
+plt.savefig(filename + 'map_plt_brg5.png')
 plt.close()
-plt.show()

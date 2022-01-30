@@ -14,6 +14,8 @@ from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, Gl
 from tensorflow.keras import regularizers
 from tensorflow.keras.callbacks import TensorBoard
 
+from load_data import y_train, y_test, y_val, X_test, X_val, X_train
+
 
 path = 'data'
 
@@ -27,7 +29,6 @@ keras_callbacks = [
 ]
 
 
-from main import X_train, CC_train_labels, X_val, CC_val_labels, X_test, CC_test_labels, D_train_labels, D_test_labels, Y_val_labels, Y_train_labels, Y_test_labels, D_val_labels
 
 callback = tf.keras.callbacks.EarlyStopping(monitor='loss', patience=3)
 inputs = Input(shape = (84,150, 3))
