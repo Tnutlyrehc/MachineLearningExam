@@ -77,6 +77,7 @@ print(X_train.shape)
 
 X_train = X_train.reshape(7680, 84 * 150 * 3)
 X_val = X_val.reshape(1920, 84 * 150 * 3)
+X_test = X_test.reshape(2400, 84 * 150 * 3)
 
 # Parameter grid to sample from during fitting, chooses a different combination on each iteration
 # Number of trees in random forest
@@ -144,7 +145,15 @@ final_forest_CC = RandomForestClassifier(
 
 final_forest_CC.fit(X_train_val, labels.CC[Y_train_val])
 
-predictions = final_forest_CC.predict(X_test)
-accuracy = accuracy_score(predictions, labels.CC[y_test])
-print(accuracy)
+predictions_test = final_forest_CC.predict(X_test)
+predictions_train_val = final_forest_CC.predict(X_train_val)
+accuracy_test = accuracy_score(predictions_test, labels.CC[y_test])
+accuracy_train_val = accuracy_score(predictions_train_val, labels.CC[Y_train_val])
+print("CC model accuracy test")
+print(accuracy_test)
+print("CC model accuracy train_val")
+print(accuracy_train_val)
 
+print(predictions_test.shape)
+np.save('CC_RF_PRED_TEST.npy', predictions_test)
+np.save('CC_RF_PRED_TRAIN_VAL.npy', predictions_test)
