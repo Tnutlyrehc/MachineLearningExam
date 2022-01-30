@@ -1,5 +1,3 @@
-# save the final model to file
-import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
@@ -8,8 +6,6 @@ from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.layers import Flatten
 from tensorflow.keras.optimizers import SGD
-from matplotlib import pyplot
-import datetime
 
 
 # load train and test dataset
@@ -23,7 +19,6 @@ def load_dataset():
     trainY = to_categorical(trainY)
     testY = to_categorical(testY)
     return trainX, trainY, testX, testY
-
 
 
 # scale pixels
@@ -52,10 +47,7 @@ def define_model():
     # compile model
     opt = SGD(learning_rate=0.01, momentum=0.9)
     model.compile(optimizer=opt, loss='categorical_crossentropy', metrics=['accuracy'])
-
-
     return model
-
 
 
 # run the test harness for evaluating a model
@@ -71,9 +63,6 @@ def run_test_harness():
     # save model
     model.save('final_model.h5')
 
+
 # entry point, run the test harness
 run_test_harness()
-
-import matplotlib.pyplot as plt
-
-

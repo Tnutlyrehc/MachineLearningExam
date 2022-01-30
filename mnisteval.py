@@ -1,4 +1,3 @@
-# evaluate the deep model on the test dataset
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import load_model
 from tensorflow.keras.utils import to_categorical
@@ -44,4 +43,3 @@ def run_test_harness():
 
 # entry point, run the test harness
 run_test_harness()
-

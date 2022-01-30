@@ -6,7 +6,7 @@ from keras.applications.vgg16 import decode_predictions
 
 model = VGG16()
 
-image = load_img('data/test/566.jpg', target_size=(224, 224))
+image = load_img('data/tf_verify/books.jpg', target_size=(224, 224))
 image = img_to_array(image)
 image = image.reshape((1, image.shape[0], image.shape[1], image.shape[2]))
 
