@@ -80,33 +80,6 @@ X_train = X_train.reshape(7680, 84 * 150 * 3)
 X_val = X_val.reshape(1920, 84 * 150 * 3)
 X_test = X_test.reshape(2400, 84 * 150 * 3)
 
-#-------------------------------------------------------------
-"""
- Initialize
-rf = RandomForestClassifier(
-    n_estimators=25,
-    n_jobs=-1,
-    verbose=2)
-
-# Fit
-# rf.fit(X_train, labels.CC[y_train])
-rf.fit(X_train, labels.D[y_train])
-# rf.fit(X_train, labels.Y[y_train])
-
-# Predict on training and validation
-y_pred_train = rf.predict(X_train)
-
-# Predict for test
-y_pred_test = rf.predict(X_val)
-
-# Training metrics
-print("Training metrics")
-print(sklearn.metrics.classification_report(y_true=labels.D[y_train], y_pred=y_pred_train))
-
-# Test data metrics
-print("Test data metrics")
-print(sklearn.metrics.classification_report(y_true=labels.D[y_val], y_pred=y_pred_test))
-"""
 
 # Parameter grid to sample from during fitting, chooses a different combination on each iteration
 # Number of trees in random forest
@@ -173,10 +146,6 @@ final_forest_D = RandomForestClassifier(
 
 
 final_forest_D.fit(X_train_val, labels.D[Y_train_val])
-
-predictions = final_forest_D.predict(X_test)
-accuracy = accuracy_score(predictions, labels.D[y_test])
-print(accuracy)
 
 predictions_test = final_forest_D.predict(X_test)
 predictions_train_val = final_forest_D.predict(X_train_val)
