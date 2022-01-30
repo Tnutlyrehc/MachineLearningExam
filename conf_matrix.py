@@ -16,9 +16,20 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, GlobalAveragePooling2D, Concatenate
 from tensorflow.keras import regularizers
 
-from Image_generator import labels, test_datagen_Y, test_datagen_D, test_datagen_CC, y_test
-from main import X_test as X_test_np
-
+from load_data import labels, y_test
+path = 'data'
+val_datagenerator = image.ImageDataGenerator(rescale=1/255)
+batch_size= 16
+test_datagen_Y = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_test, :],
+                            directory= path + '/test',
+                            x_col= 'filenames',
+                            y_col='Y_string',
+                            batch_size=batch_size,
+                            shuffle=False,
+                            class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
 def conf_matrix(filename_model, filename_fig, test_data, true_labels, variable, data_gen = False):
 
     model = keras.models.load_model(filename_model)

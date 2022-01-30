@@ -100,12 +100,10 @@ inputs = Input(shape = (84,150, 3))
 y = Conv2D(32, 5, activation='relu')(inputs)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 y = Conv2D(64, 5, activation='relu')(y)
-y = SpatialDropout2D(0.2)(y)
 y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
 x = keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu')(x)
-x = Dropout(0.1)(x)
 outputs = Dense(1, activation='sigmoid')(x)
 
 ConvMod_CC = Model(inputs, outputs)
