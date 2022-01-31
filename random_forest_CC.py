@@ -156,4 +156,4 @@ print(accuracy_train_val)
 
 print(predictions_test.shape)
 np.save('CC_RF_PRED_TEST.npy', predictions_test)
-np.save('CC_RF_PRED_TRAIN_VAL.npy', predictions_test)
+np.save('CC_RF_PRED_TRAIN_VAL.npy', predictions_train_val)
