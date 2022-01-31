@@ -52,7 +52,7 @@ train_generator_CC= train_datagenerator.flow_from_dataframe(
                             class_mode='binary',
                             target_size=(150,84),
                             color_mode='rgb')
-"""
+
 train_generator_D= train_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_train, :],
                             directory= path + '/train',
@@ -61,7 +61,7 @@ train_generator_D= train_datagenerator.flow_from_dataframe(
                             batch_size=batch_size,
                             class_mode='categorical',
                             target_size=(150,84),
-                            color_mode='rgb')"""
+                            color_mode='rgb')
 
 train_generator_Y= train_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_train, :],
@@ -84,7 +84,7 @@ val_generator_CC = val_datagenerator.flow_from_dataframe(
                             class_mode='binary',
                             target_size=(150,84),
                             color_mode='rgb')
-"""
+
 val_generator_D = val_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_val, :],
                             directory= path + '/validation',
@@ -94,7 +94,7 @@ val_generator_D = val_datagenerator.flow_from_dataframe(
                             class_mode='categorical',
                             target_size=(150,84),
                             color_mode='rgb')
-"""
+
 
 val_generator_Y = val_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_val, :],
@@ -110,7 +110,7 @@ val_size = 0.16
 test_size = 0.2
 train_size = 1 - val_size - test_size
 
-"""
+
 # Defining the model for D
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(32, 5, activation='relu')(inputs)
@@ -136,7 +136,7 @@ D_data_augmentation_fit = ConvMod_D.fit(train_generator_D,
 
 ConvMod_D.save('models/data_augmentation_D.h5')
 np.save('data_augmentation_D_training.npy', D_data_augmentation_fit.history)
-"""
+
 # Defining the model for CC
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(32, 5, activation='relu')(inputs)
@@ -189,7 +189,7 @@ Y_data_augmentation_fit = ConvMod_Y.fit(train_generator_Y,
 ConvMod_Y.save('models/data_augmentation_Y.h5')
 np.save('data_augmentation_Y_training.npy', Y_data_augmentation_fit.history)
 
-'''
+
 
 # Defining the test data generators
 test_datagen_D = val_datagenerator.flow_from_dataframe(
@@ -223,4 +223,3 @@ test_datagen_CC = val_datagenerator.flow_from_dataframe(
                             target_size=(150,84),
                             color_mode='rgb')
 
-'''

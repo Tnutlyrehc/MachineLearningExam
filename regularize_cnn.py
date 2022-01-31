@@ -14,7 +14,7 @@ from tensorflow.keras.layers import Dense, Input, Dropout, Conv2D, MaxPool2D, Gl
 from tensorflow.keras.regularizers import l2
 from load_data import labels, X_train, X_test, X_val, y_train, y_test, y_val
 
-'''
+
 # Defining the early stopping
 callbacks_list = [
 	keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
@@ -172,7 +172,7 @@ Y_fit = ConvMod_Y.fit(X_train, labels.Y[y_train], epochs=25, batch_size=32,
                       validation_data= (X_val, labels.Y[y_val]))
 ConvMod_Y.save('models/regularize_dropout_Y.h5')
 np.save('regularize_dropout_Y_training.npy', Y_fit.history)
-'''
+
 # weight decay l2
 weight_decay = 0.001
 
