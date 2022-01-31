@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 from keras.preprocessing import image
 
 
-path = 'data'
+path = '../data'
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
 
@@ -155,5 +155,5 @@ print("CC model accuracy train_val")
 print(accuracy_train_val)
 
 print(predictions_test.shape)
-np.save('CC_RF_PRED_TEST.npy', predictions_test)
-np.save('CC_RF_PRED_TRAIN_VAL.npy', predictions_train_val)
+np.save('../CC_RF_PRED_TEST.npy', predictions_test)
+np.save('../CC_RF_PRED_TRAIN_VAL.npy', predictions_train_val)
