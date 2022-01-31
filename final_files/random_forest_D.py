@@ -1,16 +1,17 @@
 import sklearn
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import RandomizedSearchCV
 import numpy as np
 import pandas as pd
 import os
+from sklearn.model_selection import GridSearchCV
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from keras.preprocessing import image
 
 
-path = 'data'
+path = '../data'
 # creating the labels from CSV file
 labels = pd.read_csv(path + '/DIDA_12000_String_Digit_Labels.csv', names=['Index', 'Label'])
 
@@ -79,6 +80,7 @@ X_train = X_train.reshape(7680, 84 * 150 * 3)
 X_val = X_val.reshape(1920, 84 * 150 * 3)
 X_test = X_test.reshape(2400, 84 * 150 * 3)
 
+
 # Parameter grid to sample from during fitting, chooses a different combination on each iteration
 # Number of trees in random forest
 n_estimators = [int(x) for x in np.linspace(start = 200, stop = 1000, num = 10)]
@@ -119,7 +121,7 @@ rf_random = RandomizedSearchCV(
     n_jobs = -1)
 
 # Fit the random search model
-rf_random.fit(X_train, labels.Y[y_train])
+rf_random.fit(X_train, labels.D[y_train])
 print('Done fitting')
 # review the best parameters from fitting the random search
 rf_random.best_params_
@@ -133,7 +135,7 @@ print(X_train_val.shape)
 Y_train_val = np.concatenate((y_train, y_val))
 print(Y_train_val.shape)
 
-final_forest_Y = RandomForestClassifier(
+final_forest_D = RandomForestClassifier(
     n_estimators=1000,
     min_samples_split=2,
     min_samples_leaf=2,
@@ -143,17 +145,17 @@ final_forest_Y = RandomForestClassifier(
 )
 
 
-final_forest_Y.fit(X_train_val, labels.Y[Y_train_val])
+final_forest_D.fit(X_train_val, labels.D[Y_train_val])
 
-predictions_test = final_forest_Y.predict(X_test)
-predictions_train_val = final_forest_Y.predict(X_train_val)
-accuracy_test = accuracy_score(predictions_test, labels.Y[y_test])
-accuracy_train_val = accuracy_score(predictions_train_val, labels.Y[Y_train_val])
-print("Y model accuracy test")
+predictions_test = final_forest_D.predict(X_test)
+predictions_train_val = final_forest_D.predict(X_train_val)
+accuracy_test = accuracy_score(predictions_test, labels.D[y_test])
+accuracy_train_val = accuracy_score(predictions_train_val, labels.D[Y_train_val])
+print("D model accuracy test")
 print(accuracy_test)
-print("Y model accuracy train_val")
+print("D model accuracy train_val")
 print(accuracy_train_val)
 
 print(predictions_test.shape)
-np.save('Y_RF_PRED_TEST.npy', predictions_test)
-np.save('Y_RF_PRED_TRAIN_VAL.npy', predictions_train_val)
+np.save('../D_RF_PRED_TEST.npy', predictions_test)
+np.save('../D_RF_PRED_TRAIN_VAL.npy', predictions_train_val)
