@@ -24,7 +24,6 @@ y = MaxPool2D(pool_size=(2,2), strides=(2,2))(y)
 
 x = keras.layers.Flatten()(y)
 x = Dense(128, activation= 'relu')(x)
-x = BatchNormalization()(x)
 outputs = Dense(1, activation='sigmoid')(x)
 
 ConvMod_CC = Model(inputs, outputs)
@@ -37,7 +36,6 @@ CC_fit = ConvMod_CC.fit(X_train, labels.CC[y_train], epochs=25, batch_size=32, v
 ConvMod_CC.save('models/plain_CC.h5')
 np.save('plain_CC_training.npy', CC_fit.history)
 
-'''
 # Defining the model for D
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(32, 5, activation='relu')(inputs)
@@ -62,8 +60,8 @@ ConvMod_D.compile( optimizer='adam',
 
 D_fit = ConvMod_D.fit(X_train,one_hot_D_train, epochs=25, batch_size=32, validation_data= (X_val, one_hot_D_val))
 ConvMod_D.save('models/plain_D.h5')
-np.save('plain_D_training.npy', D_fit.history)'''
-'''
+np.save('plain_D_training.npy', D_fit.history)
+
 # Defining the model for Y
 inputs = Input(shape = (84,150, 3))
 y = Conv2D(32, 5, activation='relu')(inputs)
@@ -83,4 +81,4 @@ ConvMod_Y.compile( optimizer='adam',
 
 Y_fit = ConvMod_Y.fit(X_train, labels.Y[y_train], epochs=25, batch_size=32, validation_data= (X_val, labels.Y[y_val]))
 ConvMod_Y.save('models/plain_Y.h5')
-np.save('plain_Y_training.npy', Y_fit.history)'''
+np.save('plain_Y_training.npy', Y_fit.history)

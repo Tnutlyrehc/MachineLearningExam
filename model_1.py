@@ -20,6 +20,7 @@ from main import path
 from os import listdir
 from os.path import isfile, join
 import glob
+import datetime
 
 
 
@@ -76,9 +77,12 @@ Incep_simple_model.compile( optimizer='adam',
 
 Incep_simple_model.summary()
 
+log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
 Incep_simple_model.fit(
     train_generator_CC,
     steps_per_epoch= 7680 * train_size // batch_size,
-    epochs=1)
+    epochs=1, callbacks=[tensorboard_callback])
 
 

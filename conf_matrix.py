@@ -20,14 +20,25 @@ from load_data import labels, y_test
 path = 'data'
 val_datagenerator = image.ImageDataGenerator(rescale=1/255)
 batch_size= 16
-test_datagen_Y = val_datagenerator.flow_from_dataframe(
+test_datagen_D = val_datagenerator.flow_from_dataframe(
                             dataframe= labels.loc[y_test, :],
                             directory= path + '/test',
                             x_col= 'filenames',
-                            y_col='Y_string',
+                            y_col='D_string',
                             batch_size=batch_size,
                             shuffle=False,
                             class_mode='categorical',
+                            target_size=(150,84),
+                            color_mode='rgb')
+
+test_datagen_CC = val_datagenerator.flow_from_dataframe(
+                            dataframe= labels.loc[y_test, :],
+                            directory= path + '/test',
+                            x_col= 'filenames',
+                            y_col='CC_string',
+                            batch_size=batch_size,
+                            shuffle=False,
+                            class_mode='binary',
                             target_size=(150,84),
                             color_mode='rgb')
 print('test')
@@ -57,8 +68,8 @@ def conf_matrix(filename_model, filename_fig, test_data, true_labels, variable, 
     plt.ylabel('True')
     plt.savefig(filename_fig)
 
-conf_matrix(filename_model='models/Y_data_augmentation.h5', test_data=test_datagen_Y, true_labels=labels.Y[y_test],
-            filename_fig= 'plots/Y_data_aug_pred_conf_matrix.jpg', variable='Y', data_gen=True)
+conf_matrix(filename_model='models/D_data_augmentation.h5', test_data=test_datagen_D, true_labels=labels.D[y_test],
+            filename_fig= 'plots/D_data_aug_pred_conf_matrix.jpg', variable='D', data_gen=True)
 
 def seq_acc (true_labels_CC, true_labels_D, true_labels_Y, pred_CC, pred_D, pred_Y):
     score = 0
@@ -82,4 +93,3 @@ def char_acc (true_labels_CC, true_labels_D, true_labels_Y, pred_CC, pred_D, pre
     acc = score / n
     return acc
 
-true_labels_CC

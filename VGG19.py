@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
+import keras
 from tqdm import tqdm
 from keras.preprocessing import image
 from tensorflow.keras.utils import to_categorical
@@ -35,6 +36,16 @@ history = CC_model.fit(X_train, labels.CC[y_train],
                     validation_data=(X_test, y_test))
 
 fig, axes=plt.subplots(nrows=1, ncols=2, figsize=(16,6))
+
+callbacks = [
+    keras.callbacks.TensorBoard(
+    log_dir='logs',
+    histogram_freq=1,
+    embeddings_freq=1,
+    )
+]
+
+#pip tensorboard --logdir=logs
 
 axes[0].plot(history.history['accuracy'])
 axes[0].plot(history.history['val_accuracy'])
